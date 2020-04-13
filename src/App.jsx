@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import {
   Input, InputNumber, Checkbox, Button,
@@ -33,11 +36,6 @@ const App = () => {
     </Field>
   );
 
-  const inputText = {
-    width: '200px',
-    margin: '5px',
-    display: 'block',
-  };
   const inputAge = {
     width: '60px',
     margin: '5px',
@@ -76,11 +74,11 @@ const App = () => {
   return (
     <Formik
       initialValues={{
-        name: 'QWe',
-        password: '1Qqqqqqqq',
-        passwordConfirmation: '1Qqqqqqqq',
-        email: 'qwe@mail.ru',
-        website: 'http://www.we.ru',
+        name: '',
+        password: '',
+        passwordConfirmation: '',
+        email: '',
+        website: '',
         age: 18,
         skills: [],
         acceptedTerms: false,
@@ -105,7 +103,7 @@ const App = () => {
     >
       {(props) => {
         const {
-          errors, touched, values, isSubmitting,
+          errors, touched, values, isSubmitting, handleReset,
         } = props;
         return (
           <Form
@@ -115,7 +113,6 @@ const App = () => {
             }}
           >
             {defaultField('name', 'input', 'Input Name', Input)}
-            {/* <Field name="name" type="input" as={Input} style={inputText} /> */}
             <Field
               name="age"
               type="number"
@@ -129,15 +126,10 @@ const App = () => {
               <div style={{ color: 'red', margin: '5px' }}>{errors.age}</div>
             ) : null}
             {defaultField('password', 'password', 'Input password', Input.Password)}
-            {/* <Field name="password" type="password" as={Input.Password} style={{width: '200px', margin: '5px'}} /> */}
             <div />
             {defaultField('passwordConfirmation', 'password', 'Confirm password', Input.Password)}
-            {/* <Field name="passwordConfirmation" type="password" as={Input.Password} style={{width: '200px', margin: '5px'}} /> */}
             {defaultField('email', 'email', 'email', Input)}
             {defaultField('website', 'url', 'website', Input)}
-
-            {/* Experimental */}
-
             <FieldArray
               name="skills"
               render={(arrayHelpers) => (
@@ -145,11 +137,7 @@ const App = () => {
                   {values.skills && values.skills.length > 0 ? (
                     values.skills.map((friend, index) => (
                       <div key={index}>
-                        <Input
-                          placeholder="input skill"
-                          name={`skills.${index}`}
-                          style={{ display: 'inlineBlock', width: '200px', margin: '5px' }}
-                        />
+                        {defaultField(`skills.${index}`, 'input', 'Input skill', Input)}
                         <MinusCircleOutlined
                           className="dynamic-delete-button"
                           style={{ margin: '0 10px' }}
@@ -177,15 +165,8 @@ const App = () => {
                 </div>
               )}
             />
-            {/* {errors.skills && touched.skills ? (
-            <div style={{color: 'red', margin: '5px', display:'inline'}} >{errors.skills[1]}</div>
-          ) : null} */}
-
-            {/* Experimental */}
-
+            <span style={{ marginLeft: '5px' }}>Согласие на обработку данных</span>
             {defaultField('acceptedTerms', 'checkbox', 'checked', Checkbox)}
-            {/* <Field name="acceptedTerms" type="checkbox" as={Checkbox} style={{display: 'block', margin: '5px'}} /> */}
-
             <Button
               disabled={isSubmitting}
               type="primary"
@@ -193,6 +174,15 @@ const App = () => {
               style={{ display: 'block', margin: '15px', marginLeft: '5px' }}
             >
               Submit
+            </Button>
+            <Button
+              style={{ display: 'block', margin: '15px', marginLeft: '5px' }}
+              onClick={(event) => {
+                event.preventDefault();
+                handleReset();
+              }}
+            >
+              Reset
             </Button>
           </Form>
         );

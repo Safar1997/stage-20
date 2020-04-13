@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable react/prop-types */
+
 import React from 'react';
 import {
   Input, InputNumber, Checkbox, Button,

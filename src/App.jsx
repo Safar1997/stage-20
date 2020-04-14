@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/prop-types */
 import React from 'react';
 import {
   Input, InputNumber, Checkbox, Button,
@@ -61,8 +64,8 @@ const App = () => {
       .min(18, 'Must be in range of 18 and 65')
       .max(65, 'Must be in range of 18 and 65')
       .required('You must enter your age'),
-    skills: Yup.array().of(Yup.string()
-      .required('Add a skill or delete field')),
+    // skills: Yup.array().of(Yup.string()
+    //   .required('Add a skill or delete field')),
     acceptedTerms: Yup.boolean()
       .required('Required')
       .oneOf([true], 'You must accept the terms and conditions.'),
@@ -71,16 +74,19 @@ const App = () => {
   return (
     <Formik
       initialValues={{
-        name: '',
-        password: '',
-        passwordConfirmation: '',
-        email: '',
-        website: '',
+        name: 'Qwqeqwe',
+        password: 'Qwqeqwe123',
+        passwordConfirmation: 'Qwqeqwe123',
+        email: 'qweqw@mail.ru',
+        website: 'http://www.rr.ru',
         age: 18,
         skills: [],
         acceptedTerms: false,
       }}
       onSubmit={async (values, actions) => {
+        if (values.skills.length !== undefined) {
+          values.skills = [...values.skills.filter((el) => el !== '')];
+        }
         await axios
           .post('http://localhost:3001/sign-up', values)
           .then((res) => {
